@@ -6,13 +6,13 @@
     <style>
     ul {
         margin: 0;
+        padding: 0 10px;
         list-style: none;
     }
 
     li {
-        width: 50%;
         padding: 10px 0;
-        color: #229471;
+        color:#59615e;
         font-weight: bold;
         text-transform: uppercase;
         font-size: 13px;
@@ -20,6 +20,7 @@
 
     li input {
         margin-top: 5px;
+        display: block;
     }
 
     img {
@@ -27,17 +28,16 @@
         height: auto;
     }
 
-    form,
-    table {
-        display: inline-block;
-        vertical-align: top;
+    form {
+        width: 15%;
+        float: left;
     }
 
     table th {
         font-weight: bold;
         text-transform: uppercase;
         font-size: 13px;
-        color: #229471;
+        color: #59615e;
         border: 1px solid #d0d0d0;
         padding: 5px 40px;
     }
@@ -47,9 +47,25 @@
         border: 1px solid #d0d0d0;
     }
 
+    .padding {
+        padding: 0 5px;
+        vertical-align: top;
+        border: none;
+    }
+
+    .buttonRemove {
+        width: 70px;
+        font-size: 10px;
+        height: 24px;
+        color: white;
+        background: #5adab3;
+        border: none;
+        cursor: pointer;
+    }
+
     h1,
     h2 {
-        color: #0fa71d;
+        color: #5adab3;
         display: inline-block;
         font-family: arial;
     }
@@ -91,19 +107,6 @@
         font-size: 12px;
         opacity: 0.5;
     }
-
-    .error {
-        color: red;
-        font-size: 10px;
-    }
-
-    .visible {
-        display: block;
-    }
-
-    .hide {
-        display: none;
-    }
     </style>
 </head>
 
@@ -117,37 +120,22 @@
             <li>
                 <label>Url car:</label>
                 <input type="url" data-js="data-image">
-                <span class="error hide" data-js="data-error-url">
-                  campo em branco!
-                </span>
             </li>
             <li>
                 <label>Model car:</label>
                 <input type="text" data-js="data-model" placeholder="ex:model/car">
-                <span class="error hide" data-js="data-error-model">
-                   campo em branco!
-                </span>
             </li>
             <li>
                 <label>Year car:</label>
                 <input type="text" data-js="data-year" placeholder="ex:1970">
-                <span class="error hide" data-js="data-error-year">
-                   campo em branco!
-                </span>
             </li>
             <li>
                 <label>Pane car:</label>
                 <input type="text" data-js="data-pane" placeholder="ex:AXZ45678">
-                <span class="error hide" data-js="data-error-pane">
-                   campo em branco!
-                </span>
             </li>
             <li>
                 <label>Color car:</label>
                 <input type="text" data-js="data-cor" placeholder="ex:blue">
-                <span class="error hide" data-js="data-error-color">
-                   campo em branco!
-                </span>
             </li>
             <li>
                 <button type="submit">Register car</button>
