@@ -14,7 +14,7 @@
     const ajxGET = new XMLHttpRequest();
 
     function initEvents() {
-      $sendPOST.addEventListener('submit', handleForm, false);
+      $sendPOST.addEventListener('submit', handleFormPOST, false);
       $sendGET.addEventListener('submit', handleFormGET, false);
     }
 
@@ -55,31 +55,44 @@
       return $image;
     }
 
-    function createTableElements() {
+    function createHTMLElement(element) {
+      return doc.createElement(element);
+    }
+
+    function outputHTMLValue(elem) {
+      elem.reduce((prev, curr) => {
+        return prev.innerHTML = curr;
+      });
+    };
+
+    function appendElement(element, item) {
+      for (var i = 0; i < item.length; i++) {
+        element.appendChild(item[i]);
+      }
+
+      return element;
+    }
+
+    function tableElementsPOST() {
       const $fragment = doc.createDocumentFragment();
-      const $tr = doc.createElement('tr');
-      const $tdBrand = doc.createElement('td');
-      const $tdImage = doc.createElement('td');
-      const $tdYear = doc.createElement('td');
-      const $tdPlate = doc.createElement('td');
-      const $tdColor = doc.createElement('td');
+      const $tr = createHTMLElement('tr');
+      const $tdBrand = createHTMLElement('td');
+      const $tdImage = createHTMLElement('td');
+      const $tdYear = createHTMLElement('td');
+      const $tdPlate = createHTMLElement('td');
+      const $tdColor = createHTMLElement('td');
 
       const value = $inputs.map(item => item.value)
+      outputHTMLValue(
+        [$tdBrand, value[0],
+          $tdYear, value[2],
+          $tdPlate, value[3],
+          $tdColor, value[4]
+        ]);
+      appendElement($tdImage, [createImage(value[1])]);
+      appendElement($tr, [$tdBrand,$tdImage,$tdYear,$tdPlate,$tdColor,createButtonRemove()]);
 
-      $tdBrand.innerHTML = value[0];
-      $tdImage.appendChild(createImage(value[1]));
-      $tdYear.innerHTML = value[2];
-      $tdPlate.innerHTML = value[3];
-      $tdColor.innerHTML = value[4];
-
-      $tr.appendChild($tdImage);
-      $tr.appendChild($tdBrand);
-      $tr.appendChild($tdYear);
-      $tr.appendChild($tdPlate);
-      $tr.appendChild($tdColor);
-      $tr.appendChild(createButtonRemove());
-
-      return $fragment.appendChild($tr);
+      return $tr;
     }
 
     function generateURL() {
@@ -122,8 +135,8 @@
 
     function handleGET() {
       if (isRequestOK(ajxGET))
-        var data = parserData(ajxGET);
-       return data;
+        console.log('ok', ajxGET.responseText);
+
     }
 
     function isRequestOK(name) {
@@ -134,8 +147,8 @@
       return JSON.parse(name.responseText);
     }
 
-    function handleForm(e) {
-      $contentTable.appendChild(createTableElements());
+    function handleFormPOST(e) {
+      $contentTable.appendChild(tableElementsPOST());
       requestPOST();
       e.preventDefault();
     }
