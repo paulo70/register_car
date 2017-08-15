@@ -1,4 +1,3 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function($, doc) {
   const appCar = (function() {
     const module = require('../lib/components'),
@@ -121,8 +120,6 @@
       ]);
 
       return $contentTable.appendChild($tr);
-
-      console.log('hihihi', dados);
     }
 
     function handleFormPOST(e) {
@@ -148,52 +145,3 @@
 
 
 })(window.DOM, document);
-},{"../lib/ajax-module":2,"../lib/components":3}],2:[function(require,module,exports){
-exports.isRequestOK = function(name) {
-  return name.readyState === 4 && name.status === 200;
-}
-
-exports.parserData = function(name) {
-  return JSON.parse(name.responseText);
-}
-
-},{}],3:[function(require,module,exports){
-exports.createHTMLElement = function(element) {
-  return document.createElement(element);
-}
-
-exports.outputHTMLValue = function(elem) {
-  elem.reduce((prev, curr) => {
-    return prev.innerHTML = curr;
-  });
-};
-
-exports.appendElement = function(element, item) {
-  for (var i = 0; i < item.length; i++) {
-    element.appendChild(item[i]);
-  }
-
-  return element;
-}
-
-exports.createImage = function(link) {
-  const $image = document.createElement('img');
-  $image.setAttribute('src', link);
-
-  return $image;
-}
-
-exports.generateURL = function(element) {
-  return element.reduce(function(acc, item, index) {
-    if (index === 1) {
-      acc = 'brandname' + '=' + acc.value + '&' + acc.name + '=' + acc.value + '&' + item.name + '=' + item.value;
-    } else {
-      acc = acc + '&' + item.name + '=' + item.value;
-    }
-
-    return acc;
-  }, 0);
-
-}
-
-},{}]},{},[1]);

@@ -1,9 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function($, doc) {
   const appCar = (function() {
-    const module = require('../lib/components'),
-      moduleAJAX = require('../lib/ajax-module');
-
     const $companyTitle = $('[data-js="companytitle"]');
     const $companyPhone = $('[data-js="companyphone"]');
     const $sendPOST = $('[data-js="post"]');
@@ -15,14 +12,6 @@
     const ajxCompany = new XMLHttpRequest();
     const ajxPost = new XMLHttpRequest();
     const ajxGET = new XMLHttpRequest();
-
-    const $fragment = doc.createDocumentFragment();
-    const $tr = module.createHTMLElement('tr');
-    const $tdBrand = module.createHTMLElement('td');
-    const $tdImage = module.createHTMLElement('td');
-    const $tdYear = module.createHTMLElement('td');
-    const $tdPlate = module.createHTMLElement('td');
-    const $tdColor = module.createHTMLElement('td');
 
     function initEvents() {
       $sendPOST.addEventListener('submit', handleFormPOST, false);
@@ -37,15 +26,15 @@
     }
 
     function handleInfo() {
-      if (moduleAJAX.isRequestOK(ajxCompany)) {
-        var data = moduleAJAX.parserData(ajxCompany);
+      if (isRequestOK(ajxCompany)) {
+        var data = parserData(ajxCompany);
         $companyTitle.innerHTML = data.company;
         $companyPhone.innerHTML = data.phone;
       }
     }
 
     function createButtonRemove() {
-      const $buttoRemove = module.createHTMLElement('button');
+      const $buttoRemove = doc.createElement('button');
 
       $buttoRemove.setAttribute('class', 'buttonRemove');
       $buttoRemove.textContent = 'remove';
@@ -59,15 +48,65 @@
       $parent.innerHTML = '';
     }
 
+    function createImage(link) {
+      const $image = doc.createElement('img');
+      $image.setAttribute('src', link);
+
+      return $image;
+    }
+
+    function outputHTMLValue(elem) {
+      elem.reduce((prev, curr) => {
+        return prev.innerHTML = curr;
+      });
+    };
+
+    function appendElement(element, item) {
+      for (var i = 0; i < item.length; i++) {
+        element.appendChild(item[i]);
+      }
+
+      return element;
+    }
+
+    function createHTMLElement(element) {
+      return doc.createElement(element);
+    }
+
     function tableElementsPOST() {
+      const $fragment = doc.createDocumentFragment();
+      const $tr = createHTMLElement('tr');
+      const $tdBrand = createHTMLElement('td');
+      const $tdImage = createHTMLElement('td');
+      const $tdYear = createHTMLElement('td');
+      const $tdPlate = createHTMLElement('td');
+      const $tdColor = createHTMLElement('td');
+
       const value = $inputs.map(item => item.value)
-      module.outputHTMLValue([$tdBrand, value[0], $tdYear, value[2], $tdPlate, value[3], $tdColor, value[4]]);
-      module.appendElement($tdImage, [module.createImage(value[1])]);
-      module.appendElement($tr, [$tdBrand, $tdImage, $tdYear, $tdPlate, $tdColor, createButtonRemove()]);
+      outputHTMLValue(
+        [$tdBrand, value[0],
+          $tdYear, value[2],
+          $tdPlate, value[3],
+          $tdColor, value[4]
+        ]);
+      appendElement($tdImage, [createImage(value[1])]);
+      appendElement($tr, [$tdBrand, $tdImage, $tdYear, $tdPlate, $tdColor, createButtonRemove()]);
 
       return $tr;
     }
 
+    function generateURL() {
+      return $inputs.reduce(function(acc, item, index) {
+        if (index === 1) {
+          acc = 'brandname' + '=' + acc.value + '&' + acc.name + '=' + acc.value + '&' + item.name + '=' + item.value;
+        } else {
+          acc = acc + '&' + item.name + '=' + item.value;
+        }
+
+        return acc;
+      }, 0);
+
+    }
 
     function requestPOST() {
       ajxPost.open('POST', 'http://localhost:3000/car');
@@ -75,15 +114,15 @@
         'Content-Type',
         'application/x-www-form-urlencoded'
       );
-      const url = module.generateURL($inputs);
+      const url = generateURL();
       ajxPost.send(url);
 
       ajxPost.addEventListener('readystatechange', handlePost, false);
     }
 
     function handlePost() {
-      if (moduleAJAX.isRequestOK(ajxPost))
-        moduleAJAX.parserData(ajxPost);
+      if (isRequestOK(ajxPost))
+        parserData(ajxPost);
     }
 
     function requestGET() {
@@ -95,34 +134,17 @@
     }
 
     function handleGET() {
-      if (moduleAJAX.isRequestOK(ajxGET)) {
-        var info = moduleAJAX.parserData(ajxGET);
-        fillTable(info);
-      }
+      if (isRequestOK(ajxGET))
+        console.log('ok', ajxGET.responseText);
+
     }
 
-    function fillTable(dados) {
-      dados.map(function(item, index) {
-        if (index === 0) {
-          module.outputHTMLValue([
-            $tdBrand, item.brand,
-            $tdImage, item.image,
-            $tdYear,  item.year,
-            $tdPlate, item.plate,
-            $tdColor, item.color
-          ]);
-        }
-        return dados;
-      });
+    function isRequestOK(name) {
+      return name.readyState === 4 && name.status === 200;
+    }
 
-      module.appendElement($tr, [
-        $tdBrand, $tdImage, $tdYear,
-        $tdPlate, $tdColor, createButtonRemove()
-      ]);
-
-      return $contentTable.appendChild($tr);
-
-      console.log('hihihi', dados);
+    function parserData(name) {
+      return JSON.parse(name.responseText);
     }
 
     function handleFormPOST(e) {
@@ -148,52 +170,4 @@
 
 
 })(window.DOM, document);
-},{"../lib/ajax-module":2,"../lib/components":3}],2:[function(require,module,exports){
-exports.isRequestOK = function(name) {
-  return name.readyState === 4 && name.status === 200;
-}
-
-exports.parserData = function(name) {
-  return JSON.parse(name.responseText);
-}
-
-},{}],3:[function(require,module,exports){
-exports.createHTMLElement = function(element) {
-  return document.createElement(element);
-}
-
-exports.outputHTMLValue = function(elem) {
-  elem.reduce((prev, curr) => {
-    return prev.innerHTML = curr;
-  });
-};
-
-exports.appendElement = function(element, item) {
-  for (var i = 0; i < item.length; i++) {
-    element.appendChild(item[i]);
-  }
-
-  return element;
-}
-
-exports.createImage = function(link) {
-  const $image = document.createElement('img');
-  $image.setAttribute('src', link);
-
-  return $image;
-}
-
-exports.generateURL = function(element) {
-  return element.reduce(function(acc, item, index) {
-    if (index === 1) {
-      acc = 'brandname' + '=' + acc.value + '&' + acc.name + '=' + acc.value + '&' + item.name + '=' + item.value;
-    } else {
-      acc = acc + '&' + item.name + '=' + item.value;
-    }
-
-    return acc;
-  }, 0);
-
-}
-
 },{}]},{},[1]);
