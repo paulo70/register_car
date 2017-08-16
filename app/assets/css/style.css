@@ -1,0 +1,143 @@
+.wrap {
+  width: 100%;
+  overflow: hidden;
+}
+
+form {
+  width: 50%;
+  float: left;
+  clear: both;
+}
+
+form ul {
+  margin: 0;
+  padding: 0 0.625em;
+  list-style: none;
+}
+
+form li {
+  padding: 0.625em 0;
+  color: #59615e;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+form li input {
+  margin-top: 5px;
+  display: block;
+  width: 50%;
+}
+
+img {
+  max-width: 100%;
+  height: 30%;
+}
+
+table{
+  width: 50%;
+  float: right;
+  margin-top: 1.500em;
+}
+
+table th {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: #59615e;
+  border: 1px solid #d0d0d0;
+  padding: 1%;
+  font-size: 0.813em;
+}
+
+tbody tr td {
+  padding: 1%;
+  border: 1px solid #d0d0d0;
+}
+
+.padding {
+  padding: 0 5px;
+  vertical-align: top;
+  border: none;
+}
+
+.buttonRemove {
+  width: 70px;
+  font-size: 10px;
+  height: 24px;
+  color: white;
+  background: #5adab3;
+  border: none;
+  cursor: pointer;
+}
+
+.list-get{
+ width: 25%;
+}
+.list-get li{
+  display: inline;
+  width: 30%;
+  margin: 0.667em 0 0;
+}
+
+.buttonGet{
+ width: 14.5%;
+ margin: 0.333em 0.375em 0;
+}
+
+.input-get{
+  width:100%;
+  float: left;
+  margin-top: 0.625em;
+}
+
+h1,
+h2 {
+  color: #5adab3;
+  display: inline-block;
+  font-family: arial;
+  margin-top: 15px;
+}
+
+button {
+  width: 14.5%;
+  text-transform: uppercase;
+  height: 30px;
+  margin-left: 0.750em;
+}
+
+span.font{
+  font-size: 0.6vw;
+}
+
+ ::-webkit-input-placeholder {
+  /* Chrome/Opera/Safari */
+  color: gray;
+  font-style: italic;
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+ ::-moz-placeholder {
+  /* Firefox 19+ */
+  color: gray;
+  font-style: italic;
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+ :-ms-input-placeholder {
+  /* IE 10+ */
+  color: gray;
+  font-style: italic;
+  font-size: 12px;
+  opacity: 0.5;
+}
+
+ :-moz-placeholder {
+  /* Firefox 18- */
+  color: gray;
+  font-style: italic;
+  font-size: 12px;
+  opacity: 0.5;
+}
