@@ -15,14 +15,6 @@
     const ajxPost = new XMLHttpRequest();
     const ajxGET = new XMLHttpRequest();
 
-    const $fragment = doc.createDocumentFragment();
-    const $tr = module.createHTMLElement('tr');
-    const $tdBrand = module.createHTMLElement('td');
-    const $tdImage = module.createHTMLElement('td');
-    const $tdYear = module.createHTMLElement('td');
-    const $tdPlate = module.createHTMLElement('td');
-    const $tdColor = module.createHTMLElement('td');
-
     function initEvents() {
       $sendPOST.addEventListener('submit', handleFormPOST, false);
       $sendGET.addEventListener('submit', handleFormGET, false);
@@ -59,12 +51,21 @@
     }
 
     function tableElementsPOST() {
+      const $fragment = doc.createDocumentFragment();
+      const $tr = module.createHTMLElement('tr');
+      const $tdBrand = module.createHTMLElement('td');
+      const $tdYear = module.createHTMLElement('td');
+      const $tdPlate = module.createHTMLElement('td');
+      const $tdColor = module.createHTMLElement('td');
+      const $tdImage = module.createHTMLElement('td');
       const value = $inputs.map(item => item.value)
+
       module.outputHTMLValue([$tdBrand, value[0], $tdYear, value[2], $tdPlate, value[3], $tdColor, value[4]]);
       module.appendElement($tdImage, [module.createImage(value[1])]);
       module.appendElement($tr, [$tdBrand, $tdImage, $tdYear, $tdPlate, $tdColor, createButtonRemove()]);
+      module.appendElement($fragment, [$tr])
 
-      return $tr;
+      return $fragment;
     }
 
 
@@ -101,25 +102,36 @@
     }
 
     function fillTable(dados) {
+      const $fragment = doc.createDocumentFragment();
+      const $tr = module.createHTMLElement('tr');
+      const $tdBrand = module.createHTMLElement('td');
+      const $tdYear = module.createHTMLElement('td');
+      const $tdPlate = module.createHTMLElement('td');
+      const $tdColor = module.createHTMLElement('td');
+      const $tdImage = module.createHTMLElement('td');
+      
       dados.map(function(item, index) {
         if (index === 0) {
           module.outputHTMLValue([
             $tdBrand, item.brand,
-            $tdImage, item.image,
-            $tdYear,  item.year,
+            $tdYear, item.year,
             $tdPlate, item.plate,
             $tdColor, item.color
           ]);
         }
+        module.appendElement($tdImage, [module.createImage(item.image)]);
+
         return dados;
       });
-
       module.appendElement($tr, [
         $tdBrand, $tdImage, $tdYear,
         $tdPlate, $tdColor, createButtonRemove()
       ]);
 
-      return $contentTable.appendChild($tr);
+      module.appendElement($fragment, [$tr]);
+      module.appendElement($contentTable, [$fragment])
+
+      return $fragment;
     }
 
     function handleFormPOST(e) {
