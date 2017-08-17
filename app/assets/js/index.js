@@ -14,6 +14,7 @@
     const ajxCompany = new XMLHttpRequest();
     const ajxPost = new XMLHttpRequest();
     const ajxGET = new XMLHttpRequest();
+    const ajxDelete = new XMLHttpRequest();
 
     function initEvents() {
       $sendPOST.addEventListener('submit', handleFormPOST, false);
@@ -40,14 +41,29 @@
 
       $buttoRemove.setAttribute('class', 'buttonRemove');
       $buttoRemove.textContent = 'remove';
-      $buttoRemove.addEventListener('click', handleRemoveRow, false);
+      $buttoRemove.addEventListener('click', handleRemoveCar, false);
 
       return $buttoRemove;
     }
 
-    function handleRemoveRow() {
+    function handleRemoveCar() {
+      ajxDelete.open('DELETE', 'http://localhost:3000/car');
+      ajxDelete.setRequestHeader('Content-Type',
+        'application/x-www-form-urlencoded'
+      )
+
+      ajxDelete.send('plate=' + this.parentNode.children[3].textContent);
+
+      ajxDelete.addEventListener('readystatechange', handleDelete, false);
+
       const $parent = this.parentNode;
       $parent.innerHTML = '';
+
+    }
+
+    function handleDelete() {
+      if (moduleAJAX.isRequestOK(ajxDelete))
+        console.log(ajxDelete.responseText);
     }
 
     function tableElementsPOST() {
@@ -109,7 +125,7 @@
       const $tdPlate = module.createHTMLElement('td');
       const $tdColor = module.createHTMLElement('td');
       const $tdImage = module.createHTMLElement('td');
-      
+
       dados.map(function(item, index) {
         if (index === 0) {
           module.outputHTMLValue([
