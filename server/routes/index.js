@@ -2,23 +2,7 @@
 
 var express = require('express');
 var router = express.Router();
-var data = [{
-	  brandname:'BMW-2-series',
-	  brand: 'BMW-2-series',
-    image: 'http://blog.caranddriver.com/wp-content/uploads/2015/11/BMW-2-series.jpg',
-    year: '2015',
-    plate: 'bmw-4625',
-    color: 'Red'
-  },
-  {
-  	brandname:'Ferrari-Testarossa',
-  	brand: 'Ferrari-Testarossa',
-    image: 'https://pictures.topspeed.com/IMG/crop/201511/1984-ferrari-testarossa-44_600x0w.jpg',
-    year: '1993',
-    plate: 'kvs-4822',
-    color: 'Red'
-  }
-];
+var data = [];
 
 router.get('/', function(req, res) {
   res.json(data);
@@ -45,6 +29,13 @@ router.post('/', function(req, res) {
     year:  req.body.year,
     plate: req.body.plate,
     color: req.body.color
+  });
+  res.json({ message: 'success' });
+});
+
+router.delete('/', function(req, res) {
+  data = data.filter(function(car) {
+    return car.plate !== req.body.plate;
   });
   res.json({ message: 'success' });
 });
